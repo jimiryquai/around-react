@@ -1,38 +1,14 @@
-import './App.css';
+import '../index.css';
+import Header from './Header';
+import Main from './Main';
+import Footer from './Footer';
 
 function App() {
 	return (
 		<div className="page">
-			<header className="header">
-				<img src="<%=require('./images/logo-white.svg')%>" alt="logo" className="logo" />
-			</header>
-
-			<main className="main">
-				{/* Profile Section */}
-				<section className="profile">
-					<div className="avatar">
-						<img src="" alt="jacques cousteau" className="avatar__img" id="avatar" />
-						<button className="button button_avatar"></button>
-					</div>
-					<div className="profile__info">
-						<h1 className="profile__name">Jacques Cousteau</h1>
-						<button
-							className="button button_edit"
-							title="button that launches profile editing form"
-						></button>
-						<p className="profile__job">Explorer</p>
-					</div>
-					<button className="button button_add" title="button that launches image adding form"></button>
-				</section>
-				{/* Cards Gallery Section */}
-				<section className="gallery">
-					<ul className="cards"></ul>
-				</section>
-			</main>
-
-			<footer className="footer">
-				<p className="footer__copyright">&copy; James Ryan 2021</p>
-			</footer>
+			<Header />
+			<Main />
+			<Footer />
 
 			{/* Popup to Edit User Info */}
 			<div className="popup popup_type_edit">
