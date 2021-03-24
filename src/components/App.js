@@ -2,6 +2,8 @@ import '../index.css';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
+import ImagePopup from './ImagePopup';
+import PopupWithForm from './PopupWithForm';
 
 function App() {
 	return (
@@ -9,15 +11,17 @@ function App() {
 			<Header />
 			<Main />
 			<Footer />
+			<PopupWithForm />
+			<ImagePopup />
 
 			{/* Popup to Edit User Info */}
 			<div className="popup popup_type_edit">
 				<div className="popup__modal popup__modal_type_form">
 					<button className="popup__close popup__close_type_edit" title="button that closes form"></button>
 					<h2 className="content-title">Edit profile</h2>
-					<form className="form form_type_edit" novalidate>
+					<form className="form form_type_edit" noValidate>
 						<fieldset className="form__set">
-							<label className="form__label" for="name-input">
+							<label className="form__label" htmlFor="name-input">
 								<input
 									type="text"
 									className="form__input form__input_name"
@@ -32,7 +36,7 @@ function App() {
 								/>
 								<span className="form__input-error" id="name-input-error"></span>
 							</label>
-							<label className="form__label" for="job-input">
+							<label className="form__label" htmlFor="job-input">
 								<input
 									type="text"
 									className="form__input form__input_job"
@@ -63,7 +67,7 @@ function App() {
 					<h2 className="content-title">Change User Avatar</h2>
 					<form className="form form_type_edit-avatar" action="#" name="edit-avatar">
 						<fieldset className="form__set">
-							<label className="form__label" for="avatar-input">
+							<label className="form__label" htmlFor="avatar-input">
 								<input
 									className="form__input form__input_avatar"
 									name="avatar-input"
@@ -87,23 +91,23 @@ function App() {
 				<div className="popup__modal popup__modal_type_form">
 					<button className="popup__close popup__close_type_add" title="button that closes form"></button>
 					<h2 className="content-title">Add Place</h2>
-					<form className="form form_type_add" novalidate>
+					<form className="form form_type_add" noValidate>
 						<fieldset className="form__set">
-							<label className="form__label" for="title-input">
+							<label className="form__label" htmlFor="title-input">
 								<input
 									type="text"
 									className="form__input form__input_title"
 									id="title-input"
 									name="title-input"
 									placeholder="Title"
-									minlength="1"
-									maxlength="30"
+									minLength="1"
+									maxLength="30"
 									aria-describedby="title-input-error"
 									required
 								/>
-								<span className="form__input-error" id="title-input-error"></span>
+								<span className="htmlForm__input-error" id="title-input-error"></span>
 							</label>
-							<label className="form__label" for="url-input">
+							<label className="form__label" htmlFor="url-input">
 								<input
 									type="url"
 									className="form__input form__input_url"
@@ -126,22 +130,12 @@ function App() {
 			<div className="popup popup_type_delete">
 				<div className="popup__modal popup__modal_type_form popup__modal_type_delete">
 					<button className="popup__close popup__close_type_delete" title="button that closes form"></button>
-					<form className="form form_type_delete" action="#" novalidate>
-						<h2 className="content__title">Are you sure?</h2>
+					<h2 className="content__title">Are you sure?</h2>
+					<form className="form form_type_delete" action="#" noValidate>
 						<button className="button button_submit" type="submit">
 							Yes
 						</button>
 					</form>
-				</div>
-			</div>
-			{/* Popup to Display Card Image */}
-			<div className="popup popup_type_image">
-				<div className="popup__modal popup__modal_type_image">
-					<button className="popup__close popup__close_type_image" title="button that closes form"></button>
-					<figure className="popup__figure">
-						<img src="" alt="" className="popup__image" />
-						<figcaption className="popup__caption"></figcaption>
-					</figure>
 				</div>
 			</div>
 
