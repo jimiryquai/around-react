@@ -1,10 +1,12 @@
 import React from 'react';
 
 function PopupWithForm(props) {
+	const isOpen = props.isOpen ? 'popup_opened' : '';
+
 	return (
-		<div className={`popup popup_type_${props.name}`}>
+		<div className={`popup popup_type_${props.name} ${isOpen}`}>
 			<div className="popup__modal popup__modal_type_form">
-				<button className="popup__close" title="button that closes form"></button>
+				<button className="popup__close" title="button that closes form" onClick={props.onClose}></button>
 				<h2 className="content-title">{props.title}</h2>
 				<form className="form" name={props.name} noValidate>
 					{props.children}
