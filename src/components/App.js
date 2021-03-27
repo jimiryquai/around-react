@@ -1,5 +1,5 @@
 import '../index.css';
-import React from 'react';
+import React, { useState } from 'react';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
@@ -13,56 +13,60 @@ function App() {
 	const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
 	const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
 	const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+	const [isSelectedCard, setIsSelectedCard] = useState(null);
 
 	function handleEditAvatarClick() {
 		setIsEditAvatarPopupOpen(true);
+		window.addEventListener('keyup', handleEscClose);
 	}
 
 	function handleEditProfileClick() {
 		setIsEditProfilePopupOpen(true);
+		window.addEventListener('keyup', handleEscClose);
 	}
 
 	function handleAddPlaceClick() {
 		setIsAddPlacePopupOpen(true);
+		window.addEventListener('keyup', handleEscClose);
+	}
+
+	function handleCardClick(card) {
+		setIsSelectedCard(card);
+		window.addEventListener('keyup', handleEscClose);
+	}
+
+	function handleEscClose(e) {
+		if (e.key === 'Escape') {
+			closeAllPopups();
+		}
 	}
 
 	function closeAllPopups() {
 		setIsEditAvatarPopupOpen(false);
 		setIsEditProfilePopupOpen(false);
 		setIsAddPlacePopupOpen(false);
+		setIsSelectedCard(null);
+		window.removeEventListener('keyup', handleEscClose);
 	}
 
 	return (
-		<div className="page">
-			<Header />
-			<Main
-				onEditProfile={handleEditProfileClick}
-				onAddPlace={handleAddPlaceClick}
-				onEditAvatar={handleEditAvatarClick}
-			/>
-			<Footer />
-			<PopupWithForm name="confirm delete" title="Are you sure?" isOpen={false} onClose={closeAllPopups} />
-			<EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />
-			<AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} />
-			<EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} />
-			<ImagePopup onClose={closeAllPopups} />
-
-			<template className="card-template">
-				<li className="card">
-					<button className="button button_trash" title="button that deletes image"></button>
-					<img src="" alt="" className="card__image" />
-					<div className="card__content">
-						<div className="card__content_place_left">
-							<h3 className="card__title">#</h3>
-						</div>
-						<div className="card__content_place_right">
-							<button className="button button_heart" title="button that likes image"></button>
-							<p className="card__likes">0</p>
-						</div>
-					</div>
-				</li>
-			</template>
-		</div>
+		<>
+			<div className="page">
+				<Header />
+				<Main
+					onEditProfile={handleEditProfileClick}
+					onAddPlace={handleAddPlaceClick}
+					onEditAvatar={handleEditAvatarClick}
+					onCardClick={handleCardClick}
+				/>
+				<Footer />
+				<PopupWithForm name="confirm delete" title="Are you sure?" isOpen={false} onClose={closeAllPopups} />
+				<EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />
+				<AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} />
+				<EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} />
+				<ImagePopup card={isSelectedCard} onClose={closeAllPopups} />
+			</div>
+		</>
 	);
 }
 
