@@ -11,7 +11,7 @@ function ImagePopup(props) {
 						alt={props.card && props.card.name}
 						className="popup__image"
 					/>
-					<figcaption className="popup__caption"></figcaption>
+					<figcaption className="popup__caption">{props.card && props.card.name}</figcaption>
 				</figure>
 			</div>
 		</div>
