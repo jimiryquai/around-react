@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/around-react-2/static/css/main.8052aa1b.chunk.css",
+    "main.css": "/around-react-2/static/css/main.a616787f.chunk.css",
     "main.js": "/around-react-2/static/js/main.5fca390a.chunk.js",
     "main.js.map": "/around-react-2/static/js/main.5fca390a.chunk.js.map",
     "runtime-main.js": "/around-react-2/static/js/runtime-main.ffa1e803.js",
@@ -10,7 +10,7 @@
     "static/js/3.3f3d5c5d.chunk.js": "/around-react-2/static/js/3.3f3d5c5d.chunk.js",
     "static/js/3.3f3d5c5d.chunk.js.map": "/around-react-2/static/js/3.3f3d5c5d.chunk.js.map",
     "index.html": "/around-react-2/index.html",
-    "static/css/main.8052aa1b.chunk.css.map": "/around-react-2/static/css/main.8052aa1b.chunk.css.map",
+    "static/css/main.a616787f.chunk.css.map": "/around-react-2/static/css/main.a616787f.chunk.css.map",
     "static/js/2.0d5f7ccb.chunk.js.LICENSE.txt": "/around-react-2/static/js/2.0d5f7ccb.chunk.js.LICENSE.txt",
     "static/media/index.css": "/around-react-2/static/media/trash.cbc09a89.svg",
     "static/media/avatar.a40fe61d.jpg": "/around-react-2/static/media/avatar.a40fe61d.jpg",
@@ -19,7 +19,7 @@
   "entrypoints": [
     "static/js/runtime-main.ffa1e803.js",
     "static/js/2.0d5f7ccb.chunk.js",
-    "static/css/main.8052aa1b.chunk.css",
+    "static/css/main.a616787f.chunk.css",
     "static/js/main.5fca390a.chunk.js"
   ]
 }
