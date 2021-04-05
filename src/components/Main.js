@@ -1,23 +1,13 @@
 import React, { useState } from 'react';
-import api from '../utils/api';
-import defaultAvatarPicture from '../utils/constants';
 import Card from './Card';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import api from '../utils/api';
 
 function Main(props) {
-	const [userName, setUserName] = React.useState('Jimmy Jump');
-	const [userDescription, setUserDescription] = React.useState("I don't leave no witnesses!");
-	const [userAvatar, setUserAvatar] = React.useState(defaultAvatarPicture);
 	const [cards, setCards] = useState([]);
+	const currentUser = React.useContext(CurrentUserContext);
 
 	React.useEffect(() => {
-		api.getUserInfo()
-			.then((user) => {
-				setUserName(user.name);
-				setUserDescription(user.about);
-				setUserAvatar(user.avatar);
-			})
-			.catch((err) => console.log(err));
-
 		api.getCardList()
 			.then((cards) => {
 				let cardList = [];
@@ -29,11 +19,27 @@ function Main(props) {
 			.catch((err) => console.log(err));
 	}, []);
 
+	function handleCardLike(card) {
+		// Check one more time if this card was already liked
+		const isLiked = card.likes.some((i) => i._id === currentUser._id);
+		// Send a request to the API and getting the updated card data
+		api.changeCardLikeStatus(card._id, !isLiked)
+			.then((newCard) => {
+				// Create a new array based on the existing one and put a new card into it
+				const newCards = cards.map((c) => (c._id === card._id ? newCard : c));
+				// Update the state
+				setCards(newCards);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}
+
 	return (
 		<main className="main">
 			<section className="profile">
 				<div className="avatar">
-					<img src={userAvatar} alt={userName} className="avatar__img" id="avatar" />
+					<img src={currentUser.avatar} alt={currentUser.name} className="avatar__img" id="avatar" />
 					<button
 						className="button button_avatar"
 						title="button that launches avatar editing form"
@@ -41,24 +47,24 @@ function Main(props) {
 					></button>
 				</div>
 				<div className="profile__info">
-					<h1 className="profile__name">{userName}</h1>
+					<h1 className="profile__name">{currentUser.name}</h1>
 					<button
 						className="button button_edit"
 						title="button that launches profile editing form"
 						onClick={props.onEditProfile}
 					></button>
-					<p className="profile__job">{userDescription}</p>
+					<p className="profile__job">{currentUser.about}</p>
 				</div>
 				<button
 					className="button button_add"
-					title="button that launches image adding form"
+					title="button that launches card adding form"
 					onClick={props.onAddPlace}
 				></button>
 			</section>
 			<section className="gallery">
 				<ul className="cards">
 					{cards.map((card, index) => (
-						<Card key={index} card={card} onCardClick={props.onCardClick} />
+						<Card key={index} card={card} onCardClick={props.onCardClick} onCardLike={handleCardLike} />
 					))}
 				</ul>
 			</section>

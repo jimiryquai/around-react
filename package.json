@@ -1,7 +1,7 @@
 {
 	"name": "around_us_react",
 	"version": "0.1.0",
-	"homepage": "https://jimiryquai.github.io/around-react-2/",
+	"homepage": "https://jimiryquai.github.io/around-react/",
 	"private": true,
 	"dependencies": {
 		"@testing-library/jest-dom": "^5.11.9",
