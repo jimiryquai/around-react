@@ -38,6 +38,17 @@ function App() {
 		window.addEventListener('keyup', handleEscClose);
 	}
 
+	function handleUpdateUser({ name, about }) {
+		api.setUserInfo({ name, about })
+			.then((updatedInfo) => {
+				setCurrentUser(updatedInfo);
+				closeAllPopups();
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}
+
 	function handleAddPlaceClick() {
 		setIsAddPlacePopupOpen(true);
 		window.addEventListener('keyup', handleEscClose);
@@ -74,7 +85,11 @@ function App() {
 				/>
 				<Footer />
 				<PopupWithForm name="confirm delete" title="Are you sure?" isOpen={false} onClose={closeAllPopups} />
-				<EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />
+				<EditProfilePopup
+					isOpen={isEditProfilePopupOpen}
+					onClose={closeAllPopups}
+					onUpdateUser={handleUpdateUser}
+				/>
 				<AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} />
 				<EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} />
 				<ImagePopup card={isSelectedCard} onClose={closeAllPopups} />
