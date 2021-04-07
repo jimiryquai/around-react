@@ -33,6 +33,17 @@ function App() {
 		window.addEventListener('keyup', handleEscClose);
 	}
 
+	function handleUpdateAvatar({ avatar }) {
+		api.setUserAvatar({ avatar })
+			.then((updatedAvatar) => {
+				setCurrentUser(updatedAvatar);
+				setIsEditAvatarPopupOpen(false);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}
+
 	function handleEditProfileClick() {
 		setIsEditProfilePopupOpen(true);
 		window.addEventListener('keyup', handleEscClose);
@@ -42,7 +53,7 @@ function App() {
 		api.setUserInfo({ name, about })
 			.then((updatedInfo) => {
 				setCurrentUser(updatedInfo);
-				closeAllPopups();
+				setIsEditProfilePopupOpen(false);
 			})
 			.catch((err) => {
 				console.log(err);
@@ -91,7 +102,11 @@ function App() {
 					onUpdateUser={handleUpdateUser}
 				/>
 				<AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} />
-				<EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} />
+				<EditAvatarPopup
+					isOpen={isEditAvatarPopupOpen}
+					onClose={closeAllPopups}
+					onUpdateAvatar={handleUpdateAvatar}
+				/>
 				<ImagePopup card={isSelectedCard} onClose={closeAllPopups} />
 			</CurrentUserContext.Provider>
 		</div>
