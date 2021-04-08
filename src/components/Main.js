@@ -1,53 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Card from './Card';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import api from '../utils/api';
 
 function Main(props) {
-	const [cards, setCards] = useState([]);
 	const currentUser = React.useContext(CurrentUserContext);
-
-	React.useEffect(() => {
-		api.getCardList()
-			.then((cards) => {
-				let cardList = [];
-				cards.forEach((card) => {
-					cardList.push(card);
-				});
-				setCards(cardList);
-			})
-			.catch((err) => console.log(err));
-	}, []);
-
-	function handleCardLike(card) {
-		// Check one more time if this card was already liked
-		const isLiked = card.likes.some((i) => i._id === currentUser._id);
-		// Send a request to the API to get the updated card data
-		api.changeCardLikeStatus(card._id, !isLiked)
-			.then((updatedCard) => {
-				// Create a new array based on the existing one and put the updated card into it
-				const mappedCards = cards.map((c) => (c._id === card._id ? updatedCard : c));
-				// Update the state
-				setCards(mappedCards);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	}
-
-	function handleCardDelete(ownCard) {
-		// Send a request to the API to delete the card
-		api.removeCard(ownCard._id)
-			.then(() => {
-				// Create a new array based on the existing one minus the deleted card
-				const filteredCards = cards.filter((c) => c._id !== ownCard._id);
-				// Update the state
-				setCards(filteredCards);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	}
 
 	return (
 		<main className="main">
@@ -77,13 +33,13 @@ function Main(props) {
 			</section>
 			<section className="gallery">
 				<ul className="cards">
-					{cards.map((card, index) => (
+					{props.cards.map((card, index) => (
 						<Card
 							key={index}
 							card={card}
 							onCardClick={props.onCardClick}
-							onCardLike={handleCardLike}
-							onCardDelete={handleCardDelete}
+							onCardLike={props.onCardLike}
+							onCardDelete={props.onCardDelete}
 						/>
 					))}
 				</ul>

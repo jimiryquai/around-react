@@ -4,7 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## GH Pages
 
-The project is available to view at [github-pages](https://jimiryquai.github.io/around-react-2/).
+The project is available to view at [github-pages](https://jimiryquai.github.io/around-react/).
 
 ## Available Scripts
 

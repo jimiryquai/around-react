@@ -10,6 +10,7 @@ import EditAvatarPopup from './EditAvatarPopup';
 import ImagePopup from './ImagePopup';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import api from '../utils/api';
+import RemovePlacePopup from './RemovePlacePopup';
 
 function App() {
 	const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
@@ -17,6 +18,9 @@ function App() {
 	const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
 	const [isSelectedCard, setIsSelectedCard] = useState(null);
 	const [currentUser, setCurrentUser] = useState({});
+	const [cards, setCards] = useState([]);
+	const [isRemovePlacePopupOpen, setIsRemovePlacePopupOpen] = useState(false);
+	const [deletedCard, setDeletedCard] = useState(null);
 
 	React.useEffect(() => {
 		api.getUserInfo()
@@ -26,6 +30,18 @@ function App() {
 			.catch((err) => {
 				console.log(err);
 			});
+	}, []);
+
+	React.useEffect(() => {
+		api.getCardList()
+			.then((cards) => {
+				let cardList = [];
+				cards.forEach((card) => {
+					cardList.push(card);
+				});
+				setCards(cardList);
+			})
+			.catch((err) => console.log(err));
 	}, []);
 
 	function handleEditAvatarClick() {
@@ -65,6 +81,54 @@ function App() {
 		window.addEventListener('keyup', handleEscClose);
 	}
 
+	function handleAddPlaceSubmit({ name, link }) {
+		api.addCard({ name, link })
+			.then((newCard) => {
+				setCards([...cards, newCard]);
+				setIsAddPlacePopupOpen(false);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}
+
+	function handleDeleteClick(card) {
+		setDeletedCard(card);
+		setIsRemovePlacePopupOpen(true);
+		window.addEventListener('keyup', handleEscClose);
+	}
+
+	function handleCardLike(card) {
+		// Check one more time if this card was already liked
+		const isLiked = card.likes.some((i) => i._id === currentUser._id);
+		// Send a request to the API to get the updated card data
+		api.changeCardLikeStatus(card._id, !isLiked)
+			.then((updatedCard) => {
+				// Create a new array based on the existing one and put the updated card into it
+				const mappedCards = cards.map((c) => (c._id === card._id ? updatedCard : c));
+				// Update the state
+				setCards(mappedCards);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}
+
+	function handleCardDelete(deletedCard) {
+		// Send a request to the API to delete the card
+		api.removeCard(deletedCard._id)
+			.then(() => {
+				// Create a new array based on the existing one minus the deleted card
+				const filteredCards = cards.filter((c) => c._id !== deletedCard._id);
+				// Update the state
+				setCards(filteredCards);
+				setIsRemovePlacePopupOpen(false);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}
+
 	function handleCardClick(card) {
 		setIsSelectedCard(card);
 		window.addEventListener('keyup', handleEscClose);
@@ -81,6 +145,7 @@ function App() {
 		setIsEditProfilePopupOpen(false);
 		setIsAddPlacePopupOpen(false);
 		setIsSelectedCard(null);
+		setIsRemovePlacePopupOpen(false);
 		window.removeEventListener('keyup', handleEscClose);
 	}
 
@@ -93,6 +158,9 @@ function App() {
 					onAddPlace={handleAddPlaceClick}
 					onEditAvatar={handleEditAvatarClick}
 					onCardClick={handleCardClick}
+					onCardLike={handleCardLike}
+					onCardDelete={handleDeleteClick}
+					cards={cards}
 				/>
 				<Footer />
 				<PopupWithForm name="confirm delete" title="Are you sure?" isOpen={false} onClose={closeAllPopups} />
@@ -101,7 +169,17 @@ function App() {
 					onClose={closeAllPopups}
 					onUpdateUser={handleUpdateUser}
 				/>
-				<AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} />
+				<AddPlacePopup
+					isOpen={isAddPlacePopupOpen}
+					onClose={closeAllPopups}
+					onAddPlace={handleAddPlaceSubmit}
+				/>
+				<RemovePlacePopup
+					isOpen={isRemovePlacePopupOpen}
+					onClose={closeAllPopups}
+					onConfirmDelete={handleCardDelete}
+					card={deletedCard}
+				/>
 				<EditAvatarPopup
 					isOpen={isEditAvatarPopupOpen}
 					onClose={closeAllPopups}
