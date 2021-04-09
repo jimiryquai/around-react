@@ -2,6 +2,7 @@ import React from 'react';
 
 function PopupWithForm(props) {
 	const isOpenClassName = props.isOpen ? 'popup_opened' : '';
+	const isInactiveClassName = props.isSubmitButtonActive ? '' : 'button_inactive';
 
 	return (
 		<div className={`popup popup_type_${props.name} ${isOpenClassName}`}>
@@ -10,8 +11,12 @@ function PopupWithForm(props) {
 				<h2 className="content-title">{props.title}</h2>
 				<form className="form" name={props.name} onSubmit={props.onSubmit} noValidate>
 					{props.children}
-					<button className="button button_submit" type="submit" title="button that submits form">
-						Save
+					<button
+						className={`button button_submit ${isInactiveClassName}`}
+						type="submit"
+						title="button that submits form"
+					>
+						{props.submitText}
 					</button>
 				</form>
 			</div>

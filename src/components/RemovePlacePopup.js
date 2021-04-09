@@ -12,10 +12,10 @@ function RemovePlacePopup(props) {
 			name="delete"
 			title="Are you sure?"
 			isOpen={props.isOpen}
-			//isSubmitActive={true}
+			isSubmitButtonActive={true}
 			onClose={props.onClose}
 			onSubmit={handleSubmit}
-			//submitText={props.submitText}
+			submitText={props.submitText}
 		></PopupWithForm>
 	);
 }

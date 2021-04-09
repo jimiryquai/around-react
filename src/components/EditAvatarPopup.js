@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PopupWithForm from './PopupWithForm';
 
 function EditAvatarPopup(props) {
 	const avatarRef = React.useRef(0);
+	const [errorMessage, setErrorMessage] = useState();
+	const showErrorMessage = errorMessage ? 'form__input-error_active' : '';
+	const isSubmitButtonActive = !showErrorMessage;
+
+	function validateLinkInput(e) {
+		!e.target.validity.valid ? setErrorMessage(e.target.validationMessage) : setErrorMessage(null);
+	}
 
 	function handleSubmit(e) {
 		e.preventDefault();
@@ -18,6 +25,8 @@ function EditAvatarPopup(props) {
 			isOpen={props.isOpen}
 			onClose={props.onClose}
 			onSubmit={handleSubmit}
+			isSubmitButtonActive={isSubmitButtonActive}
+			submitText={props.submitText}
 		>
 			<label className="form__label" htmlFor="avatar-input">
 				<input
@@ -29,8 +38,11 @@ function EditAvatarPopup(props) {
 					placeholder="Avatar URL"
 					aria-describedby="avatar-input-error"
 					required
+					onInput={validateLinkInput}
 				/>
-				<span className="form__input-error" id="avatar-input-error"></span>
+				<span className={`form__input-error ${showErrorMessage}`} id="avatar-input-error">
+					{errorMessage}
+				</span>
 			</label>
 		</PopupWithForm>
 	);

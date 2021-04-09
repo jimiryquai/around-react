@@ -4,6 +4,11 @@ import PopupWithForm from './PopupWithForm';
 function AddPlacePopup(props) {
 	const [name, setName] = useState();
 	const [link, setLink] = useState();
+	const [nameInputErrorMessage, setNameInputErrorMessage] = useState();
+	const [linkInputErrorMessage, setLinkInputErrorMessage] = useState();
+	const showNameInputError = nameInputErrorMessage ? 'form__input-error_active' : '';
+	const showLinkInputError = linkInputErrorMessage ? 'form__input-error_active' : '';
+	const isSubmitButtonActive = !showNameInputError && !showLinkInputError;
 
 	function handleNameChange(e) {
 		setName(e.target.value);
@@ -11,6 +16,16 @@ function AddPlacePopup(props) {
 
 	function handleLinkChange(e) {
 		setLink(e.target.value);
+	}
+
+	function validateNameInput(e) {
+		!e.target.validity.valid ? setNameInputErrorMessage(e.target.validationMessage) : setNameInputErrorMessage('');
+	}
+
+	function validateLinkInput(e) {
+		!e.target.validity.valid
+			? setLinkInputErrorMessage(e.target.validationMessage)
+			: setLinkInputErrorMessage(null);
 	}
 
 	function handleSubmit(e) {
@@ -26,11 +41,13 @@ function AddPlacePopup(props) {
 
 	return (
 		<PopupWithForm
-			name="new-place"
-			title="New place"
+			name="add-place"
+			title="Add place"
 			isOpen={props.isOpen}
 			onClose={props.onClose}
 			onSubmit={handleSubmit}
+			isSubmitButtonActive={isSubmitButtonActive}
+			submitText={props.submitText}
 		>
 			<fieldset className="form__set">
 				<label className="form__label" htmlFor="title-input">
@@ -46,8 +63,11 @@ function AddPlacePopup(props) {
 						minLength="1"
 						maxLength="30"
 						aria-describedby="title-input-error"
+						onInput={validateNameInput}
 					/>
-					<span className="form__input-error" id="title-input-error"></span>
+					<span className={`form__input-error ${showNameInputError}`} id="title-input-error">
+						{nameInputErrorMessage}
+					</span>
 				</label>
 				<label className="form__label" htmlFor="url-input">
 					<input
@@ -60,8 +80,11 @@ function AddPlacePopup(props) {
 						placeholder="Image URL"
 						required
 						aria-describedby="url-input-error"
+						onInput={validateLinkInput}
 					/>
-					<span className="form__input-error" id="url-input-error"></span>
+					<span className={`form__input-error ${showLinkInputError}`} id="url-input-error">
+						{linkInputErrorMessage}
+					</span>
 				</label>
 			</fieldset>
 		</PopupWithForm>

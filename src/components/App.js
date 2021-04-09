@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
-import PopupWithForm from './PopupWithForm';
 import EditProfilePopup from './EditProfilePopup';
 import AddPlacePopup from './AddPlacePopup';
 import EditAvatarPopup from './EditAvatarPopup';
@@ -11,6 +10,7 @@ import ImagePopup from './ImagePopup';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import api from '../utils/api';
 import RemovePlacePopup from './RemovePlacePopup';
+import { submitSave, submitSaving, submitDelete, submitDeleting } from '../utils/constants';
 
 function App() {
 	const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
@@ -21,6 +21,7 @@ function App() {
 	const [cards, setCards] = useState([]);
 	const [isRemovePlacePopupOpen, setIsRemovePlacePopupOpen] = useState(false);
 	const [deletedCard, setDeletedCard] = useState(null);
+	const [submitText, setSubmitText] = useState('');
 
 	React.useEffect(() => {
 		api.getUserInfo()
@@ -45,11 +46,13 @@ function App() {
 	}, []);
 
 	function handleEditAvatarClick() {
+		setSubmitText(submitSave);
 		setIsEditAvatarPopupOpen(true);
 		window.addEventListener('keyup', handleEscClose);
 	}
 
 	function handleUpdateAvatar({ avatar }) {
+		setSubmitText(submitSaving);
 		api.setUserAvatar({ avatar })
 			.then((updatedAvatar) => {
 				setCurrentUser(updatedAvatar);
@@ -61,11 +64,13 @@ function App() {
 	}
 
 	function handleEditProfileClick() {
+		setSubmitText(submitSave);
 		setIsEditProfilePopupOpen(true);
 		window.addEventListener('keyup', handleEscClose);
 	}
 
 	function handleUpdateUser({ name, about }) {
+		setSubmitText(submitSaving);
 		api.setUserInfo({ name, about })
 			.then((updatedInfo) => {
 				setCurrentUser(updatedInfo);
@@ -77,11 +82,13 @@ function App() {
 	}
 
 	function handleAddPlaceClick() {
+		setSubmitText(submitSave);
 		setIsAddPlacePopupOpen(true);
 		window.addEventListener('keyup', handleEscClose);
 	}
 
 	function handleAddPlaceSubmit({ name, link }) {
+		setSubmitText(submitSaving);
 		api.addCard({ name, link })
 			.then((newCard) => {
 				setCards([...cards, newCard]);
@@ -94,6 +101,7 @@ function App() {
 
 	function handleDeleteClick(card) {
 		setDeletedCard(card);
+		setSubmitText(submitDelete);
 		setIsRemovePlacePopupOpen(true);
 		window.addEventListener('keyup', handleEscClose);
 	}
@@ -115,6 +123,7 @@ function App() {
 	}
 
 	function handleCardDelete(deletedCard) {
+		setSubmitText(submitDeleting);
 		// Send a request to the API to delete the card
 		api.removeCard(deletedCard._id)
 			.then(() => {
@@ -163,22 +172,24 @@ function App() {
 					cards={cards}
 				/>
 				<Footer />
-				<PopupWithForm name="confirm delete" title="Are you sure?" isOpen={false} onClose={closeAllPopups} />
 				<EditProfilePopup
 					isOpen={isEditProfilePopupOpen}
 					onClose={closeAllPopups}
 					onUpdateUser={handleUpdateUser}
+					submitText={submitText}
 				/>
 				<AddPlacePopup
 					isOpen={isAddPlacePopupOpen}
 					onClose={closeAllPopups}
 					onAddPlace={handleAddPlaceSubmit}
+					submitText={submitText}
 				/>
 				<RemovePlacePopup
 					isOpen={isRemovePlacePopupOpen}
 					onClose={closeAllPopups}
 					onConfirmDelete={handleCardDelete}
 					card={deletedCard}
+					submitText={submitText}
 				/>
 				<EditAvatarPopup
 					isOpen={isEditAvatarPopupOpen}
