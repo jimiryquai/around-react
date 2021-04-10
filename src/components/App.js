@@ -24,25 +24,18 @@ function App() {
 	const [submitText, setSubmitText] = useState('');
 
 	React.useEffect(() => {
-		api.getUserInfo()
-			.then((myUserInfo) => {
-				setCurrentUser(myUserInfo);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	}, []);
-
-	React.useEffect(() => {
-		api.getCardList()
-			.then((cards) => {
+		api.getAppInfo()
+			.then(([cards, userInfo]) => {
+				setCurrentUser(userInfo);
 				let cardList = [];
 				cards.forEach((card) => {
 					cardList.push(card);
 				});
 				setCards(cardList);
 			})
-			.catch((err) => console.log(err));
+			.catch((err) => {
+				console.log(err);
+			});
 	}, []);
 
 	function handleEditAvatarClick() {
@@ -91,7 +84,7 @@ function App() {
 		setSubmitText(submitSaving);
 		api.addCard({ name, link })
 			.then((newCard) => {
-				setCards([...cards, newCard]);
+				setCards([newCard, ...cards]);
 				setIsAddPlacePopupOpen(false);
 			})
 			.catch((err) => {

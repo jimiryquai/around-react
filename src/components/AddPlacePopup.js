@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import PopupWithForm from './PopupWithForm';
 
 function AddPlacePopup(props) {
-	const [name, setName] = useState();
-	const [link, setLink] = useState();
-	const [nameInputErrorMessage, setNameInputErrorMessage] = useState();
-	const [linkInputErrorMessage, setLinkInputErrorMessage] = useState();
+	const [name, setName] = useState('');
+	const [link, setLink] = useState('');
+	const [nameInputErrorMessage, setNameInputErrorMessage] = useState('');
+	const [linkInputErrorMessage, setLinkInputErrorMessage] = useState('');
 	const showNameInputError = nameInputErrorMessage ? 'form__input-error_active' : '';
 	const showLinkInputError = linkInputErrorMessage ? 'form__input-error_active' : '';
 	const isSubmitButtonActive = !showNameInputError && !showLinkInputError;

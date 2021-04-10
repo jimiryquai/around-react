@@ -3,10 +3,10 @@ import PopupWithForm from './PopupWithForm';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function EditProfilePopup(props) {
-	const [name, setName] = useState();
-	const [description, setDescription] = useState();
-	const [nameInputErrorMessage, setNameInputErrorMessage] = useState();
-	const [descriptionInputErrorMessage, setDescriptionInputErrorMessage] = useState();
+	const [name, setName] = useState('');
+	const [description, setDescription] = useState('');
+	const [nameInputErrorMessage, setNameInputErrorMessage] = useState('');
+	const [descriptionInputErrorMessage, setDescriptionInputErrorMessage] = useState('');
 	const showNameInputError = nameInputErrorMessage ? 'form__input-error_active' : '';
 	const showDescriptionInputError = descriptionInputErrorMessage ? 'form__input-error_active' : '';
 	const isSubmitButtonActive = !showNameInputError && !showDescriptionInputError;

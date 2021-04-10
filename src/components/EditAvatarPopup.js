@@ -3,7 +3,7 @@ import PopupWithForm from './PopupWithForm';
 
 function EditAvatarPopup(props) {
 	const avatarRef = React.useRef(0);
-	const [errorMessage, setErrorMessage] = useState();
+	const [errorMessage, setErrorMessage] = useState('');
 	const showErrorMessage = errorMessage ? 'form__input-error_active' : '';
 	const isSubmitButtonActive = !showErrorMessage;
 
